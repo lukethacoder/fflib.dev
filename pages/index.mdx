@@ -1,0 +1,38 @@
+# fflib
+
+fflib is a popular open-sourced Apex enterprise level framework built for scalability, modularity and maintainability.
+
+The fflib framework consists of several modules:
+
+- [fflib-apex-common](https://github.com/apex-enterprise-patterns/fflib-apex-common) - Common Apex Library supporting Apex Enterprise Patterns
+- [fflib-apex-mocks](https://github.com/apex-enterprise-patterns/fflib-apex-mocks) - An Apex mocking framework for true unit testing in Salesforce with Stub API support
+- [force-di](https://github.com/apex-enterprise-patterns/force-di) - Generic DI library with support for Apex, Triggers, Visualforce and Lightning
+- [at4dx](https://github.com/apex-enterprise-patterns/at4dx) - Advanced Techniques for Salesforce DX Adoption Framework
+
+## Separation of Concerns
+
+fflib encourages four main SOC principals.
+
+**1. Selector Layer**
+
+The selector layer is home to all queries for a given object. This encourages reuse of queries and builds a central place for adjusting the fields used from the object.
+
+[read more](./selectors)
+
+**2. Domain Layer**
+
+The domain layer is home to sObject manipulation. The domain class also handles the trigger methods. The aim is to keep logic deduplicated and central.
+
+[read more](./domains)
+
+**3. Service Layer**
+
+The service layer is home to the business logic within the application. Majority of code will live here. The service layer will interact with Domain and Selector classes, as well as other Service classes as needed.
+
+[read more](./services)
+
+**4. Controller Layer**
+
+The controller layer is home to methods that expose the Service layers methods and business logic. Controllers may interact with multiple Service classes but should hold only very minimal logic.
+
+[read more](./controllers)

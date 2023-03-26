@@ -2,16 +2,13 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>fflib</span>,
+  logo: <span>fflib | Apex Enterprise Framework</span>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/lukethacoder/fflib.dev',
   },
-  chat: {
-    link: 'https://discord.com',
-  },
-  docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
+  docsRepositoryBase: 'https://github.com/lukethacoder/fflib.dev',
   footer: {
-    text: 'Nextra Docs Template',
+    text: 'fflib.dev',
   },
 }
 

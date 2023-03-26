@@ -1,0 +1,59 @@
+# Service Layer: Basic Example
+
+Our example is using the example `Domain` and `Selector` classes setup in the previous examples.
+
+## Interface Class 
+
+Before we can build the main service class we must setup the interface class.
+
+```apex
+/* ICommunityPortalService.cls */
+public interface ICommunityPortalService {
+  List<PortalUser__c> getAllPortalUsers();
+  Boolean isUserLoggedIn(String portalUserSsoId);
+}
+```
+
+## Service Class
+
+The service class is built purely of methods, no boilerplate code is needed.
+
+```apex
+public inherited sharing class CommunityPortalService implements ICommunityPortalService {
+  
+  /* example usage via a Selector Class */
+	public List<PortalUser__c> getAllPortalUsers() {
+    IPortalUserSelector selector = (IPortalUserSelector)Application.Selector.newInstance(PortalUser__c.SObjectType);
+    return selector.selectAll();
+  }
+
+  /* example usage via a Domain Class */
+	public Boolean isUserLoggedIn(String userId) {
+		IPortalUsers iPortalUsers = (IPortalUsers) Application.Domain.newInstance(
+		  new Set<Id>{userId}
+		);
+    Map<String, Boolean> validatedUsersBySsoId = iPortalUsers.validateUserSso();
+    return validatedUsersBySsoId.get(userId);
+  }
+}
+```
+
+## Custom Metadata Records
+
+Before we an use our flashly new Service class, we need to setup the Application Factory Service Binding. This can be accessed from within your Salesforce instance via:
+
+Setup → Custom Metadata Types → ApplicationFactory_ServiceBinding → New.
+
+## Basic Usage
+
+```apex
+ICommunityPortalService communityPortalService = (ICommunityPortalService) Application.Service.newInstance(
+  ICommunityPortalService.class
+);
+
+// example usage via a Selector class
+List<PortalUser__c> allPortalUsers = communityPortalService.getAllPortalUsers();
+
+// example usage via a Domain Class
+Boolean isUserLoggedIn = communityPortalService.isUserLoggedIn(UserInfo.getUserId());
+```

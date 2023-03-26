@@ -1,0 +1,79 @@
+# Domain Layer: Basic Example
+
+Our example is using a custom object called `PortalUser__c`, but this example can be used with any object.
+
+
+## Interface Class 
+
+Before we can build the main domain class we must setup the interface class.
+
+```apex
+/* IPortalUsers.cls */
+public interface IPortalUsers extends IApplicationSObjectDomain {
+  Map<String, Boolean> validateUserSso(List<String> ssoId);
+}
+```
+
+## Domain Class
+
+The domain class is made up of three sections.
+
+1. boilerplate code
+2. trigger handler methods (if needed)
+3. domain class methods
+
+```apex
+public inherited sharing class PortalUsers extends ApplicationSObjectDomain implements IPortalUsers {
+
+  // 1. Boilerplate code
+  public static IPortalUsers newInstance(List<PortalUser__c> records) {
+    return (IPortalUsers) Application.Domain.newInstance(records);
+  }
+
+  public static IPortalUsers newInstance(Set<Id> recordIds) {
+    return (IPortalUsers) Application.Domain.newInstance(recordIds);
+  }
+
+  public PortalUsers(List<PortalUser__c> records) {
+    super(records);
+  }
+
+  public class Constructor implements fflib_SObjectDomain.IConstructable {
+    public fflib_SObjectDomain construct(List<SObject> sObjectList) {
+      return new PortalUsers(sObjectList);
+    }
+  }
+
+  // 2. Trigger methods
+  public override void onBeforeInsert() {
+    this.validateUserSso(getRecords());
+  }
+
+  public override void onBeforeUpdate(Map<Id, SObject> existingRecords) {
+    this.validateUserSso(getChangedRecords(new Set<String>{ 'SSOId__c' }));
+  }
+
+  // 3. Domain methods
+  public Map<String, Boolean> validateUserSso(List<String> ssoId) {
+    // run sso validation here
+  }
+}
+```
+
+> NOTE: `getRecords() `and `getChangedRecords()` are helper methods offered by the `fflib_SObjectDomain` class, which is implemented in the Constructor.
+
+## Custom Metadata Records
+
+Before we an use our flashly new Domain class, we need to setup the Application Factory Domain Binding. This can be accessed from within your Salesforce instance via:
+
+Setup → Custom Metadata Types → ApplicationFactory_DomainBinding → New.
+
+## Basic usage
+
+```apex
+List<PortalUser__c> portalUsers = new List<PortalUser__c>();
+IPortalUsers iPortalUsers = (IPortalUsers) Application.Domain.newInstance(
+  portalUsers
+);
+Map<String, Boolean> validatedUsersBySsoId = iPortalUsers.validateUserSso(portalUsers);
+```

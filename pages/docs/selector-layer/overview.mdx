@@ -1,0 +1,17 @@
+# Selector Layer
+
+The selector layer is home to all queries for a given object. This encourages reuse of queries and builds a central place for adjusting the fields used from the object.
+
+The selector layer offered by FFLIB brings things together and offers:
+
+- Centralised place for queries with common fields.
+- Allows joining other selectors so we can select common fields from other objects through relationship fields or even sub-selects.
+- Provides security checks to ensure that the user has access to a given sObject and all of the fields. If required, this can be disabled.
+
+## Naming Conventions
+
+Given the reusability of the selector classes, it is recommended to name them as the sObject name followed by `Selector` (whilst excluding the `__c` for custom objects):
+
+- `Knowledge__kav` → `KnowledgeSelector.cls`
+- `Account` → `AccountSelector.cls`
+- `ArticleManagement__c` → `ArticleManagementSelector.cls`

@@ -1,0 +1,25 @@
+# Triggers
+
+fflib brings its own flavour of a trigger handler framework. Each **sObejct** should have its own trigger handler instance, and be tied to its respective [Domain Class](/docs/domain-layer).
+
+## Naming Conventions
+
+Triggers should be named as the **sObject** name with the word `Trigger` as the prefix:
+
+- `Knowledge__kav` → `KnowledgeTrigger.trigger`
+- `Account` → `AccountTrigger.trigger`
+- `PortalUser__c` → `PortalUserTrigger.trigger`
+
+## Basic Example
+
+Create a new trigger for the **sObject**. Make sure you add the trigger points you need (`before insert`, `after insert`, etc.). The trigger should immediately hand off trigger logic to the respective [Domain Class](/docs/domain-layer).
+
+```apex
+trigger PortalUserTrigger on PortalUser__c (before insert, before update) {
+  fflib_SObjectDomain.triggerHandler(PortalUsers.class);
+}
+```
+
+## Testing
+
+Trigger testing should be covered as a part of the Domain layer testing. The Domain test class should perform each of the basic trigger methods (`insert`, `update` and `delete`) so the methods can be properly tested.

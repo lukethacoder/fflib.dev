@@ -1,0 +1,18 @@
+{
+  "index": "Overview",
+  "installation": "Installation",
+  "-- Layers": {
+    "type": "separator",
+    "title": "Layers"
+  },
+  "selector-layer": "Selector Layer",
+  "domain-layer": "Domain Layer",
+  "service-layer": "Service Layer",
+  "implementation-layer": "Implementation Layer",
+  "-- Other": {
+    "type": "separator",
+    "title": "Other"
+  },
+  "triggers": "Triggers",
+  "unit-of-work": "Unit Of Work"
+}

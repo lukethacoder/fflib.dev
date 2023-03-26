@@ -1,0 +1,34 @@
+# fflib
+
+fflib is a popular open-sourced Apex enterprise level framework built for scalability, modularity and maintainability.
+
+The fflib framework consists of several modules:
+
+- [fflib-apex-common](https://github.com/apex-enterprise-patterns/fflib-apex-common) - Common Apex Library supporting Apex Enterprise Patterns
+- [fflib-apex-mocks](https://github.com/apex-enterprise-patterns/fflib-apex-mocks) - An Apex mocking framework for true unit testing in Salesforce with Stub API support
+- [force-di](https://github.com/apex-enterprise-patterns/force-di) - Generic DI library with support for Apex, Triggers, Visualforce and Lightning
+- [at4dx](https://github.com/apex-enterprise-patterns/at4dx) - Advanced Techniques for Salesforce DX Adoption Framework
+
+## Design principals
+
+Usage of fflib encourages Separation of Concerns, DRY, SOLID and Dependency Injection principals.
+
+fflib consists of four main parts.
+
+[**1. Selector Layer**](./docs/selector-layer)
+
+The selector layer is home to all queries for a given object. This encourages reuse of queries and builds a central place for adjusting the fields used from the object.
+
+[**2. Domain Layer**](./docs/domain-layer)
+
+The domain layer is home to sObject manipulation. The domain class also handles the trigger methods. The aim is to keep logic deduplicated and central.
+
+[**3. Service Layer**](./docs/service-layer)
+
+The service layer is home to the business logic within the application. Majority of code will live here. The service layer will interact with Domain and Selector classes, as well as other Service classes as needed.
+
+[**4. Implementation Layer**](./docs/implementation-layer)
+
+The implementation layer is home to a wide array of ways you can call apex across the Salesforce platform. The most basic implementation layer is an Apex Controller. A Controller is home to methods that expose the Service layers methods and business logic. Controllers may interact with multiple Service classes but should hold only very minimal logic.
+
+Implementation layer also includes BatchApex, Scheduled Apex, APEX REST API and Flows (via invokable apex).

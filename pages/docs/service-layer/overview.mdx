@@ -1,0 +1,16 @@
+# Overview
+
+The service layer is home to the business logic within the application. Majority of code will live here. The service layer will interact with `Domain` and `Selector` classes, as well as other `Service` classes as needed.
+
+Service layer classes should remain caller agnostic. Controllers, batch jobs and web services should all be able to call the same logic without any side effects. 
+
+Creation and commiting of the `UnitOfWork` instances should occur here. `UnitOfWork` can be passed down to `Domain` classes to handle finer grain single object logic.
+
+## Naming Conventions
+
+Service layer classes only follow one naming convention, to be appended with `Service`. Prefixing service classes with a project name or group name is good practice.
+
+- `PrefixName***Service.cls`
+- `***Service.cls`
+
+> `PrefixName` could be a type of service (e.g. `Community*`, `Internal*`), project name or namespace to keep similar service classes close.

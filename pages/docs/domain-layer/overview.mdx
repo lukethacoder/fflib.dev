@@ -1,0 +1,13 @@
+# Overview
+
+The domain layer holds **sObject** manipulation methods and trigger methods. The aim is to keep all **sObject** logic centralised and deduplicated. Domain classes can be seen as a finer "Service classes" with a sole focus on single object manipulation.
+
+> NOTE: persistance of the Domain objects should not be handled here. Passing a `UnitOfWork` property to Domain methods to append their work to is best practice.
+
+## Naming Conventions
+
+Domain classes should be given a plural name of the **sObject** to highlight the bulk nature. They are given a generic name as they should only appear once in your application (in most cases).
+
+- `Knowledge__kav` → `Knowledges.cls`
+- `Account` → `Accounts.cls`
+- `ArticleManagement__c` → `ArticleManagements.cls`

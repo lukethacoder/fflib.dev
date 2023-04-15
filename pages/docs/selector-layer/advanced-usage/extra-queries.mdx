@@ -1,0 +1,106 @@
+---
+title: 'Selector Layer: Extra Queries'
+---
+
+# Extra Queries (Generic Flags)
+
+If you find yourself adding the same flags to your select methods, it might be a smart idea to abstract it out into an extra queries flag. One of the best use cases for this flag is the `IsActive` field on the `User` object. Most of the time you will want to only query for Users that are actually active, and ignore those that are not. But you do not want to restrict yourself if you ever need to query for Users that are inactive too.
+
+Lets look at an example of how this would be implemented in fflib using a `UserSelector` as an example.
+
+```apex
+public inherited sharing class UserSelector extends ApplicationSObjectSelector implements IUserSelector {
+  private List<String> additionalSObjectFieldList = new List<String>{
+    'Id',
+    'IsActive',
+    'Name',
+    'CommunityNickname',
+    'Contact.AccountId',
+    'Contact.Email'
+  };
+
+  // selector boilerplate removed for brevity. See `https://fflib.dev/docs/selector-layer/example` for source.
+
+  /* Selector Methods */
+  public List<User> selectById(Set<Id> idSet) {
+    if (idSet.isEmpty()) {
+      return new List<User>();
+    }
+
+    fflib_QueryFactory qf = getQueryFactory();
+    qf.selectFields(getSObjectFieldListWithRelatedFields());
+    qf.setCondition('Id IN :idSet' + getExtraQueries());
+
+    return Database.query(qf.toSOQL());
+  }
+
+  public User selectById(Id recordId) {
+    List<User> recordList = selectById(new Set<Id>{ recordId });
+    return recordList.isEmpty() ? null : recordList[0];
+  }
+
+  public List<User> selectByContactId(Set<Id> idSet) {
+    if (idSet.isEmpty()) {
+      return new List<User>();
+    }
+
+    fflib_QueryFactory qf = getQueryFactory();
+    qf.selectFields(getSObjectFieldListWithRelatedFields());
+    qf.setCondition('ContactId IN :idSet ' + getExtraQueries());
+
+    return Database.query(qf.toSOQL());
+  }
+
+  public User selectByContactId(Id recordId) {
+    List<User> recordList = selectByContactId(new Set<Id>{ recordId });
+    return recordList.isEmpty() ? null : recordList[0];
+  }
+
+  /**
+  * Extra Query Flags
+  */
+  private Boolean filterIsActive = true;
+
+  /**
+  * @param isActive - boolean of the IsActive user state to query for
+  */
+  public void setFilterIsActive(Boolean isActive) {
+    this.filterIsActive = isActive;
+  }
+  private String getFilterIsActive() {
+    return this.filterIsActive == true
+      ? ' AND IsActive = TRUE '
+      : ' ';
+  }
+
+  /**
+  * Test visible so we can assert our expected queries 
+  */
+  @TestVisible
+  private String getExtraQueries(Boolean removeFirstAnd) {
+    // add more `getFilter*` methods here
+    String extraQueries = setFilterIsActive();
+    return removeFirstAnd ? extraQueries.replaceFirst('AND', ' ') : extraQueries;
+  }
+  private String getExtraQueries() {
+    return getExtraQueries(false);
+  }
+}
+```
+
+## Basic Usage
+
+Same as in the first example, we are creating a new instance of our selector method. But before calling the `selectById` method we are calling the `setFilterIsActive` method. This is disabling the opt-out default of only fetching Users that are marked as `IsActive`. You can choose whether to build filters with opt-out or opt-in logic.
+
+```apex
+/* PortalUserService.cls */
+IUserSelector userSelector = (IUserSelector)Application.Selector.newInstance(
+	User.SObjectType
+);
+// set the filter to `false` as we want to fetch all Users, regardless of it they're active or not
+userSelector.setFilterIsActive(false);
+
+List<User> users = userSelector.selectById(
+  new Set<Id>{'SF_RECORD_ID'}
+);
+```

@@ -1,3 +1,71 @@
+---
+title: 'Domain Layer: Test Classes'
+---
+
 # Test Classes
 
 Domain classes can be tested without having to insert data (with the exception of one method to run tests of `insert`, `upsert` and `delete` methods).
+
+## Basic Example
+
+Using our example Domain class, `PortalUsers`, lets see what a test class would look like.
+
+{/* Before jumping in, lets add some logic to our `validateUserSso` method (we left it blank in the previous example).
+
+```apex
+// PortalUsers Domain Class
+public Map<String, Boolean> validateUserSso(List<PortalUser__c> portalUsers) {
+
+
+  for (PortalUser__c portalUser : portalUsers) {
+    if (!isSsoIdValid(portalUser.SSOId__c)) {
+      portalUser.addError('SSO Id is not valid for portal user.');
+    }
+  }
+}
+``` */}
+
+```apex
+@IsTest
+private class PortalUsersTest {
+
+  // test that generating a new instance works
+  // this will fail if the Custom Metadata records have not been setup
+  @IsTest
+  static void newInstanceTest() {
+    IPortalUsers instanceByIds = PortalUsers.newInstance(
+      new Set<Id>{ fflib_IDGenerator.generate(PortalUser__c.SObjectType) }
+    );
+    IPortalUsers instanceByRecords = PortalUsers.newInstance(new List<PortalUser__c>());
+  }
+  
+
+  @IsTest
+  static void insertAndUpdateOnRecords() {
+    // Test insert, update and delete fires off triggers properly
+    List<PortalUser__c> portalUsers = new List<PortalUser__c>{
+      GenericTestFactory.createPortalUser(),
+      GenericTestFactory.createPortalUser(),
+      GenericTestFactory.createPortalUser()
+    };
+    insert portalUsers;
+    update portalUsers;
+    delete portalUsers;
+  }
+  
+  @IsTest
+  static void validateUserSsoTest() {
+    // TODO: mock selector and/or service methods before running the domain class method
+    List<PortalUser__c> portalUsers = new List<PortalUser__c>{
+      GenericTestFactory.createPortalUser(),
+      GenericTestFactory.createPortalUser(),
+      GenericTestFactory.createPortalUser()
+    };
+
+    IPortalUsers portalUsersDomain = (IPortalUsers) Application.Domain.newInstance(portalUsers);
+    portalUsersDomain.validateUserSso();
+  }
+}
+```
+
+> NOTE: `GenericTestFactory` is a centralised place to create test data for mocking. 

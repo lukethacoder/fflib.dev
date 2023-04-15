@@ -1,4 +1,8 @@
-# Domain Layer: Basic Example
+---
+title: 'Domain Layer: Basic Example'
+---
+
+# Basic Example
 
 Our example is using a custom object called `PortalUser__c`, but this example can be used with any object.
 
@@ -54,7 +58,10 @@ public inherited sharing class PortalUsers extends ApplicationSObjectDomain impl
   }
 
   // 3. Domain methods
-  public Map<String, Boolean> validateUserSso(List<String> ssoId) {
+  public Map<String, Boolean> validateUserSso() {
+    validateUserSso((List<PortalUser__c>)getRecords());
+  }
+  public Map<String, Boolean> validateUserSso(List<PortalUser__c> portalUsers) {
     // run sso validation here
   }
 }

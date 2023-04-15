@@ -1,4 +1,8 @@
-# Selector Layer: Basic Example
+---
+title: 'Selector Layer: Basic Example'
+---
+
+# Basic Example
 
 Our example is using a custom object called `PortalUser__c`, but this example can be used with any object.
 
@@ -113,7 +117,7 @@ Here we are creating a new instance of our selector method and then calling the 
 IPortalUserSelector portalUserSelector = (IPortalUserSelector)Application.Selector.newInstance(
 	PortalUser__c.SObjectType
 );
-List<PortalUser__c> PortalUsers = portalUserSelector.selectById(
+List<PortalUser__c> portalUsers = portalUserSelector.selectById(
   new Set<Id>{'SF_RECORD_ID'}
 );
 ```

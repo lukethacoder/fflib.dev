@@ -1,0 +1,116 @@
+---
+title: 'Selector Layer: Child Records'
+---
+
+# Selecting Child Records
+
+Sub select (Relationship queries: parent-to-child) are a common pattern when working in Salesforce. Lets first look at a non-fflib way of writing a child relationship query. We will use the standard `Account` object for this example.
+
+```apex
+List<Account> accounts = [ SELECT Id, (SELECT Id FROM ChildAccounts) FROM Account WHERE Id =: accountId ];
+```
+
+Now lets see how we can add this to an `AccountSelector` class in fflib. A good practice is to set a selector level variable to check if the child relationship query is required on a per call basis. 
+
+```apex
+public inherited sharing class AccountSelector extends ApplicationSObjectSelector implements IAccountSelector {
+  private List<String> additionalSObjectFieldList = new List<String>{
+    'Id',
+    'Name',
+    'ParentId',
+  };
+
+  // selector boilerplate removed for brevity. See `https://fflib.dev/docs/selector-layer/example` for source.
+
+  public List<Account> selectById(Set<Id> idSet) {
+    if (idSet.isEmpty()) {
+      return new List<Account>();
+    }
+
+    fflib_QueryFactory qf = getQueryFactory();
+    qf.selectFields(getSObjectFieldListWithRelatedFields());
+    qf.setCondition('Id IN :idSet');
+    // this line should be added to all `select*` methods on this selector
+    // to allow any query to also query for child relationships.
+    checkWithSubSelect(qf);
+
+    return Database.query(qf.toSOQL());
+  }
+
+  public Account selectById(Id recordId) {
+    List<Account> recordList = selectById(new Set<Id>{ recordId });
+    return recordList.isEmpty() ? null : recordList[0];
+  }
+
+  // more select methods here
+
+  /**
+  * Child Relationships
+  */
+  private Boolean withChildAccounts = false;
+  private Boolean withContacts = false;
+
+  /**
+  * @description Add ChildAccounts to this query. Default to `false`
+  * @param withChildAccounts - Boolean to adjust the withChildAccounts
+  */
+  public void setWithChildAccounts(Boolean withChildAccounts) {
+    this.withChildAccounts = withChildAccounts;
+  }
+
+  /**
+  * @description Add Contacts to this query. Default to `false`
+  * @param withContacts - Boolean to adjust the withChildAccounts
+  */
+  public void setWithContacts(Boolean withContacts) {
+    this.withContacts = withContacts;
+  }
+
+  /**
+  * Checks if and which child relationships should be queried for.
+  * @param qf - current QueryFactory
+  */
+  private void checkWithSubSelect(fflib_QueryFactory qf) {
+    if (withChildAccounts == true) {
+      new AccountSelector().addQueryFactorySubselect(qf, 'ChildAccounts')
+    }
+    if (withContacts == true) {
+      // NOTE: we're calling a ContactSelector (not explicitly
+      // shown - but there is no magic happening here)
+      new ContactSelector().addQueryFactorySubselect(qf, 'Contacts')
+        // only select a subset of the fields that the selector has
+        // we don't need to query for all of the fields on this sub selector
+        .selectFields(
+          new List<String>{
+            'LastName',
+            'AccountId'
+          }
+        );
+    }
+    // add more if checks here to allow for more child sub selects to be added
+  }
+}
+```
+
+
+## Basic Usage
+
+Same as in the first example, we are creating a new instance of our selector method. But before calling the `selectById` method we are calling the `setWithContacts` method. This is enabling the fetching of the related Contacts as a part of our query.
+
+```apex
+/* PortalUserService.cls */
+IPortalUserSelector portalUserSelector = (IPortalUserSelector)Application.Selector.newInstance(
+	PortalUser__c.SObjectType
+);
+// flag we would like to fetch child Contacts
+portalUserSelector.setWithContacts(true);
+
+List<PortalUser__c> portalUsers = portalUserSelector.selectById(
+  new Set<Id>{'SF_RECORD_ID'}
+);
+
+// this is just an example of using the fetched Contacts (for the first account we've found)
+for (Contact contact : portalUsers[0].Contacts) {
+  // do something with the contact
+}
+```

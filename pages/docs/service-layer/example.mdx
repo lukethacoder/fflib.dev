@@ -1,4 +1,8 @@
-# Service Layer: Basic Example
+---
+title: 'Service Layer: Basic Example'
+---
+
+# Basic Example
 
 Our example is using the example `Domain` and `Selector` classes setup in the previous examples.
 
@@ -21,17 +25,19 @@ The service class is built purely of methods, no boilerplate code is needed.
 ```apex
 public inherited sharing class CommunityPortalService implements ICommunityPortalService {
   
-  /* example usage via a Selector Class */
-	public List<PortalUser__c> getAllPortalUsers() {
-    IPortalUserSelector selector = (IPortalUserSelector)Application.Selector.newInstance(PortalUser__c.SObjectType);
+  // example usage via a Selector Class
+  public List<PortalUser__c> getAllPortalUsers() {
+    IPortalUserSelector selector = (IPortalUserSelector)Application.Selector.newInstance(
+      PortalUser__c.SObjectType
+    );
     return selector.selectAll();
   }
 
-  /* example usage via a Domain Class */
-	public Boolean isUserLoggedIn(String userId) {
-		IPortalUsers iPortalUsers = (IPortalUsers) Application.Domain.newInstance(
-		  new Set<Id>{userId}
-		);
+  // example usage via a Domain Class
+  public Boolean isUserLoggedIn(String userId) {
+    IPortalUsers iPortalUsers = (IPortalUsers) Application.Domain.newInstance(
+      new Set<Id>{userId}
+    );
     Map<String, Boolean> validatedUsersBySsoId = iPortalUsers.validateUserSso();
     return validatedUsersBySsoId.get(userId);
   }

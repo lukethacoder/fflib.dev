@@ -1,12 +1,5 @@
 {
   "overview": "Overview",
   "example": "Basic Example",
-  "test-classes": {
-    "title": "Test Classes",
-    "display": "hidden"
-  },
-  "advanced-usage": {
-    "title": "Advanced Usage",
-    "display": "hidden"
-  }
+  "test-classes": "Test Classes"
 }

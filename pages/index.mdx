@@ -1,10 +1,9 @@
 ---
-title: fflib - Apex Enterprise Framework
+title: Home
 ---
 
 import Link from 'next/link'
 import cn from 'clsx'
-import { useState } from 'react'
 import Image from 'next/image'
 import { motion } from "framer-motion"
 
@@ -229,6 +228,14 @@ import styles from './index.module.css'
         <Feature index={2} href="/docs/service-layer">
           <h3>Service Layer</h3>
           <p className='mr-6'>Business logic. Creator and manager of **UnitOfWork**.</p>
+        </Feature>
+        <Feature index={2} href="/docs/triggers">
+          <h3>Triggers</h3>
+          <p className='mr-6'>fflib flavoured Trigger Handler concepts.</p>
+        </Feature>
+        <Feature index={2} href="/docs/unit-of-work">
+          <h3>Unit Of Work</h3>
+          <p className='mr-6'>Handle CRUD operations in an easily testable and mockable way.</p>
         </Feature>
       </Features>
     </div>

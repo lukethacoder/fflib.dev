@@ -1,1 +1,23 @@
-# Example
+---
+title: 'Implementation Layer: Basic Example'
+---
+
+# Basic Example
+
+For an example we will create an Apex Controller class that exposes a method via `@AuraEnabled` for our LWC component to call.
+
+```apex
+public with sharing class PortalUserController {
+  @TestVisible
+  private static ICommunityPortalService communityPortalService = (ICommunityPortalService) Application.Service.newInstance(
+    ICommunityPortalService.class
+  );
+
+  @AuraEnabled(Cacheable=true)
+  public static List<PortalUser__c> getAllPortalUsers() {
+    return communityPortalService.getAllPortalUsers();
+  }
+}
+```
+
+The goal is to not have any business logic living in the implementation layer, but merely translate the callers input to match that of the service class. This allows service classes to remain caller agnostic and be reusable across multiple implementation types.

@@ -1,6 +1,53 @@
-# Common Use Cases
+---
+title: 'Selector Layer: Advanced Usage'
+---
 
-TODO: list out common selector methods and ways of building out queries
+# Advanced Usage
 
-- sub queries
-- other advanced usage use cases
+import { Card, Cards } from 'nextra-theme-docs'
+
+Selectors are a relatively simple part of the fflib framework. Lets explore some of the more advanced use cases of the Selector layer.
+
+<Cards num={2}>
+  <Card
+    icon={
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        className='w-6 h-6'
+        viewBox='0 0 24 24'
+        strokeWidth='2'
+        stroke='currentColor'
+        fill='none'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      >
+        <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+        <path d='M3.5 17.5c5.667 4.667 11.333 4.667 17 0'></path>
+        <path d='M19 18.5l-2 -8.5l1 -2l2 1l1.5 -1.5l-2.5 -4.5c-5.052 .218 -5.99 3.133 -7 6h-6a3 3 0 0 0 -3 3'></path>
+        <path d='M5 18.5l2 -9.5'></path>
+        <path d='M8 20l2 -5h4l2 5'></path>
+      </svg>
+    }
+    title='Child Selectors (Sub Select)'
+    href='/docs/selector-layer/advanced-usage/child-selectors'
+  ></Card>
+  <Card
+    icon={
+      <svg
+        xmlns='http://www.w3.org/2000/svg'
+        className='w-6 h-6'
+        viewBox='0 0 24 24'
+        strokeWidth='2'
+        stroke='currentColor'
+        fill='none'
+        strokeLinecap='round'
+        strokeLinejoin='round'
+      >
+        <path stroke='none' d='M0 0h24v24H0z' fill='none'></path>
+        <path d='M5 14h14l-4.5 -4.5l4.5 -4.5h-14v16'></path>
+      </svg>
+    }
+    title='Extra Queries (Generic Flags)'
+    href='/docs/selector-layer/advanced-usage/extra-queries'
+  ></Card>
+</Cards>

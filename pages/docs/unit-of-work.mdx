@@ -1,8 +1,9 @@
 # Unit Of Work
 
-// TODO:
+{/* TODO: */}
 
 - Stores DML interactions
 - Manages bulkified DML operations
-- To be created and use in the `Service` layer, and to be passed to the `Domain` layer.
+- To be created and used in the `Service` layer, and to be passed to the `Domain` layer.
 - `commitWork()` to be called at the end of the transaction.
+- order of `SObject`s does matter. Will insert in the order provided.

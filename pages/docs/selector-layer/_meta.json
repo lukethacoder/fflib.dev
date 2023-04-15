@@ -2,11 +2,7 @@
   "overview": "Overview",
   "example": "Basic Example",
   "test-classes": {
-    "title": "Test Classes",
-    "display": "hidden"
+    "title": "Test Classes"
   },
-  "advanced-usage": {
-    "title": "Advanced Usage",
-    "display": "hidden"
-  }
+  "advanced-usage": "Advanced Usage"
 }

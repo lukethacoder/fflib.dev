@@ -15,10 +15,23 @@ const config: DocsThemeConfig = {
       <meta name='viewport' content='width=device-width, initial-scale=1.0' />
       <link rel='icon' type='image/svg+xml' href='/favicon.svg' />
       <link rel='icon' type='image/x-icon' href='/favicon.ico' />
+      <title>fflib | Apex Enterprise Framework</title>
       <meta property='og:title' content='fflib | Apex Enterprise Framework' />
+      <meta
+        name="description"
+        content='Unofficial and semi-opinionated fflib documentation. Streamline and standardise your Salesforce development process with fflib'
+      />
       <meta
         property='og:description'
         content='Unofficial and semi-opinionated fflib documentation. Streamline and standardise your Salesforce development process with fflib'
+      />
+      <meta
+        name="twitter:description"
+        content='Unofficial and semi-opinionated fflib documentation. Streamline and standardise your Salesforce development process with fflib'
+      />
+      <meta
+        property="og:url"
+        content="https://fflib.dev"
       />
       <meta name='twitter:card' content='summary_large_image' />
       <meta property='og:image' content='https://fflib.dev/thumbnail.jpg' />

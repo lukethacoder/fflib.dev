@@ -79,7 +79,7 @@ public inherited sharing class UserSelector extends ApplicationSObjectSelector i
   @TestVisible
   private String getExtraQueries(Boolean removeFirstAnd) {
     // add more `getFilter*` methods here
-    String extraQueries = setFilterIsActive();
+    String extraQueries = getFilterIsActive();
     return removeFirstAnd ? extraQueries.replaceFirst('AND', ' ') : extraQueries;
   }
   private String getExtraQueries() {

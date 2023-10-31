@@ -6,8 +6,7 @@ title: 'Selector Layer: Basic Example'
 
 Our example is using a custom object called `PortalUser__c`, but this example can be used with any object.
 
-
-## Interface Class 
+## Interface Class
 
 Before we can build the main selector class we must setup the interface class.
 
@@ -20,7 +19,7 @@ public interface IPortalUserSelector extends IApplicationSObjectSelector {
 }
 ```
 
-## Main Selector Class 
+## Main Selector Class
 
 The main selector class is made up of three sections:
 
@@ -106,7 +105,12 @@ Before we an use our flashly new Selector class, we need to setup the Applicatio
 
 Setup → Custom Metadata Types → ApplicationFactory_SelectorBinding → New.
 
-{/* TODO: add screenshot here */}
+| Key                                            | Value                    |
+| ---------------------------------------------- | ------------------------ |
+| Label                                          | PortalUserSObjectBinding |
+| ApplicationFactory_SelectorBinding Name        | PortalUserSObjectBinding |
+| Binding SObject (or Binding SObject Alternate) | PortalUser\_\_c          |
+| To                                             | PortalUserSelector       |
 
 ## Basic Usage
 

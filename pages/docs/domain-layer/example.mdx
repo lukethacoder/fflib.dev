@@ -6,8 +6,7 @@ title: 'Domain Layer: Basic Example'
 
 Our example is using a custom object called `PortalUser__c`, but this example can be used with any object.
 
-
-## Interface Class 
+## Interface Class
 
 Before we can build the main domain class we must setup the interface class.
 
@@ -75,6 +74,13 @@ Before we an use our flashly new Domain class, we need to setup the Application 
 
 Setup → Custom Metadata Types → ApplicationFactory_DomainBinding → New.
 
+| Key                                            | Value                   |
+| ---------------------------------------------- | ----------------------- |
+| Label                                          | PortalUsers             |
+| ApplicationFactory_DomainBinding Name          | PortalUsers             |
+| Binding SObject (or Binding SObject Alternate) | PortalUser\_\_c         |
+| To                                             | PortalUsers.Constructor |
+
 ## Basic usage
 
 ```apex
@@ -82,5 +88,12 @@ List<PortalUser__c> portalUsers = new List<PortalUser__c>();
 IPortalUsers iPortalUsers = (IPortalUsers) Application.Domain.newInstance(
   portalUsers
 );
-Map<String, Boolean> validatedUsersBySsoId = iPortalUsers.validateUserSso(portalUsers);
+
+// use the existing list of portalUsers that was passed to the domain class on initialisation
+Map<String, Boolean> validatedUsersBySsoId = iPortalUsers.validateUserSso();
+
+// use a new list of portalUsers
+List<PortalUser__c> portalUsersNew = new List<PortalUser__c>();
+Map<String, Boolean> validatedUsersBySsoId = iPortalUsers.validateUserSso(portalUsersNew);
+
 ```

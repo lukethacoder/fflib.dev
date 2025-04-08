@@ -8,7 +8,17 @@ const config: DocsThemeConfig = {
   },
   docsRepositoryBase: 'https://github.com/lukethacoder/fflib.dev',
   footer: {
-    text: 'fflib.dev',
+    text: (
+      <span className='flex flex-col md:flex-row w-full justify-between gap-2'>
+        <span>fflib.dev</span>
+        <span>
+          made by{' '}
+          <a href='https://lukesecomb.digital' className="underline" target='_blank'>
+            luke
+          </a>
+        </span>
+      </span>
+    ),
   },
   head: (
     <>
@@ -18,7 +28,7 @@ const config: DocsThemeConfig = {
       <title>fflib | Apex Enterprise Framework</title>
       <meta property='og:title' content='fflib | Apex Enterprise Framework' />
       <meta
-        name="description"
+        name='description'
         content='Unofficial and semi-opinionated fflib documentation. Streamline and standardise your Salesforce development process with fflib'
       />
       <meta
@@ -26,13 +36,10 @@ const config: DocsThemeConfig = {
         content='Unofficial and semi-opinionated fflib documentation. Streamline and standardise your Salesforce development process with fflib'
       />
       <meta
-        name="twitter:description"
+        name='twitter:description'
         content='Unofficial and semi-opinionated fflib documentation. Streamline and standardise your Salesforce development process with fflib'
       />
-      <meta
-        property="og:url"
-        content="https://fflib.dev"
-      />
+      <meta property='og:url' content='https://fflib.dev' />
       <meta name='twitter:card' content='summary_large_image' />
       <meta property='og:image' content='https://fflib.dev/thumbnail.jpg' />
       <meta name='twitter:image' content='https://fflib.dev/thumbnail.jpg' />
